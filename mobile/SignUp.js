@@ -21,7 +21,7 @@ handleSignUp = () => {
     firebase
       .auth()
       .createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('Main'))
+      .then(() => this.props.navigation.navigate('UserInfo'))
       .catch(error => this.setState({ errorMessage: error.message }))
 }
 render() {
