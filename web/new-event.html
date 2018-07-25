@@ -25,7 +25,6 @@
 
             autocomplete.addListener('place_changed', function() {
                 place = autocomplete.getPlace()
-                console.log(place)
             })
         }
 
@@ -49,15 +48,13 @@
             return donation
         }
 
-        function getZipCode(placeObject) {
-            for(var i=0; i < placeObject.address_components.length; i++) {
-                var component = placeObject.address_components[i]
-
-                if (component.types.includes("postal_code")){
-                    return component.long_name;
-                }
+        function formatLocation(location) {
+            var lat = location.lat();
+            var long = location.lng();
+            return {
+                type: "Point",
+                coordinates: [long, lat]
             }
-            return null;
         }
 
         function validateFormOnSubmit() {
@@ -66,49 +63,43 @@
             var startTime = document.getElementById("starttime").value;
             var endTime = document.getElementById("endtime").value;
 
-            var donation = getDonations();
+            var donation = getDonations()
+            var coords = formatLocation(place.geometry.location)
 
             var eventData = {
-                // event_id: "test",
                 host: "test",
                 name: name,
                 type: type,
                 address: place.formatted_address,
-                location: JSON.stringify(place.geometry.location),
-                //zip: getZipCode(place),
+                location: JSON.stringify(coords),
                 starttime: startTime,
                 endtime: endTime,
                 items: donation,
             }
 
-            document.getElementById("output").innerText = JSON.stringify(eventData)
-            
             var url = "https://donationstationapp.azurewebsites.net/api/eventspost";
 
-            // $.post({
-            //     url: url,
-            //     data: eventData,
-            //     success:  function() {
-            //         alert("Successfully created the event");
-            //         window.location.href = "events.html";
-            //     }
-            // })
+            /*$.post({
+                url: url,
+                data: JSON.stringify(eventData),
+                success:  function() {
+                    alert("Successfully created the event");
+                    window.location.href = "events.html";
+                }
+            })*/
 
+            
             var xhr = new XMLHttpRequest(); 
             var url = "https://donationstationapp.azurewebsites.net/api/eventspost"; 
-
             xhr.onreadystatechange = function() { 
                 if (xhr.readyState == 4) {
                     alert("Successfully created the event"); 
                     window.location.href = "events.html"; 
                 }
             }
-
             var data = JSON.stringify(eventData); 
-
             xhr.open("POST", url, true);
             xhr.send(data); 
-
         }
     </script>
 </head>
@@ -178,8 +169,6 @@
                     
                     <br>                
                     <input type="button" onClick="validateFormOnSubmit()" value="Create event" />
-
-                    <div id="output"></div>
                 </form>
             </div>
         </div>
