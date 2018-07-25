@@ -1,8 +1,10 @@
 // SignUp.js
 import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebase from 'react-native-firebase'
+import { Text, TextInput, View } from 'react-native'
+import { FormLabel, FormInput, Card, Button } from 'react-native-elements'
 
+import firebase from 'react-native-firebase'
+import { styles } from './styling';
 export default class SignUp extends React.Component {
   state = { email: '', password: '', errorMessage: null }
 handleSignUp = () => {
@@ -15,46 +17,39 @@ handleSignUp = () => {
 render() {
     return (
       <View style={styles.container}>
-        <Text>Sign Up</Text>
-        {this.state.errorMessage &&
+        <Card title='Sign Up'
+              containerStyle={styles.centerCard}
+              titleStyle={{fontSize: 24}}>
+          {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
+          <FormLabel>Email</FormLabel>
           </Text>}
-        <TextInput
-          placeholder="Email"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={email => this.setState({ email })}
-          value={this.state.email}
-        />
-        <TextInput
-          secureTextEntry
-          placeholder="Password"
-          autoCapitalize="none"
-          style={styles.textInput}
-          onChangeText={password => this.setState({ password })}
-          value={this.state.password}
-        />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
-        <Button
-          title="Already have an account? Login"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
+          <FormInput
+            placeholder="Email"
+            autoCapitalize="none"
+            style={styles.textInput}
+            onChangeText={email => this.setState({ email })}
+            value={this.state.email}
+          />
+          <FormInput
+            secureTextEntry
+            style={styles.textInput}
+            autoCapitalize="none"
+            placeholder="Password"
+            onChangeText={password => this.setState({ password })}
+            value={this.state.password}
+          />
+          <Button title="Sign Up" onPress={this.handleSignUp}
+                  buttonStyle={styles.primaryButton}
+          />
+          <Button
+            title="Already have an account? Login"
+            onPress={() => this.props.navigation.navigate('Login')}
+            buttonStyle={styles.secondaryButton}
+          />
+        </Card>
       </View>
     )
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8
-  }
-})
