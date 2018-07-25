@@ -14,28 +14,25 @@
     <link rel="icon" type="image/png" href="img/logo.png">
 
 	<script language="JavaScript">
-        function validateFormOnSubmit() {
-            var eventData = new Object();
-            eventData.event_id = "test"
+        var place;
 
-            var name = document.getElementById("event_name").value
-            eventData.name = name;
+        function initLocationSearch() {
+            var input = document.getElementById('location');
+            var autocomplete = new google.maps.places.Autocomplete(input, { types: ["address"]});
+            
+            autocomplete.setComponentRestrictions(
+                {'country': ['us']})
 
-            var type = document.getElementById("type").value;
-            eventData.type = type; 
-            eventData.host = "foo"
+            autocomplete.addListener('place_changed', function() {
+                place = autocomplete.getPlace()
+                console.log(place)
+            })
+        }
 
-            var location = document.getElementById("location").value;
-            eventData.location  = location
-            var zip = document.getElementById("zip").value;
-            eventData.zip = zip;
-            var startTime = document.getElementById("starttime").value;
-            eventData.starttime  = startTime	  
-            var endtime = document.getElementById("endtime").value;
-            eventData.endtime  = endtime
+        function getDonations() {
+            var donation = "";
 
             var x = document.getElementById("donation_clothes");
-            var donation = "";
             if(x.checked){
                 donation+=x.value
             }
@@ -48,30 +45,54 @@
                     donation+= y.value
                 }
             }
-            eventData.items = donation;
 
-        
-            var xhr = new XMLHttpRequest();
+            return donation
+        }
+
+        function getZipCode(placeObject) {
+            for(var i=0; i < placeObject.address_components.length; i++) {
+                var component = placeObject.address_components[i]
+
+                if (component.types.includes("postal_code")){
+                    return component.long_name;
+                }
+            }
+            return null;
+        }
+
+        function validateFormOnSubmit() {
+            var name = document.getElementById("event_name").value
+            var type = document.getElementById("type").value;
+            var startTime = document.getElementById("starttime").value;
+            var endTime = document.getElementById("endtime").value;
+
+            var donation = getDonations();
+
+            var eventData = {
+                event_id: "test",
+                host: "test",
+                name: name,
+                type: type,
+                address: place.formatted_address,
+                location: place.geometry.location,
+                zip: getZipCode(place),
+                startime: startTime,
+                endtime: endTime,
+                items: donation,
+            }
+
+            document.getElementById("output").innerText = JSON.stringify(eventData)
+            
             var url = "https://suhurulitest.azurewebsites.net/api/eventsPut";
 
-            
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
+            /*$.post({
+                url: url,
+                data: eventData,
+                success:  function() {
                     alert("Successfully created the event");
                     window.location.href = "events.html";
                 }
-            }
-
-            var data = JSON.stringify(eventData);
-
-            xhr.open("POST", url, true);
-            xhr.send(data);
-
-            /*xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    alert("Your event has been added!")
-                }
-            }*/
+            })*/
         }
     </script>
 </head>
@@ -126,10 +147,6 @@
                     <input name="location" id="location" type="text">
                     <br> <br>
 
-                    Zip code: 
-                    <input name="zip" id="zip" type="number">
-                    <br> <br>
-
                     Start time:
                     <input name="starttime" id="starttime" type="datetime-local">
                     <br> <br>
@@ -141,11 +158,12 @@
                     Items: <br>
                     <input  id="donation_clothes"  type="checkbox" name="items[]" value="clothes">Clothes<br>
                     <input id="donation_blanket"  type="checkbox" name="items[]" value="blanket">Blanket<br>
-                    <br> <br>
-
-                    <input name="host" type="text"  id="host" value="sravanabhavan">
-                
+                    <br>
+                    
+                    <br>                
                     <input type="button" onClick="validateFormOnSubmit()" value="Create event" />
+
+                    <div id="output"></div>
                 </form>
             </div>
         </div>
@@ -155,5 +173,7 @@
     </div>
 </div>
 
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZLO8js8TJC3_tbWYk4u557zqfOTTnaHk&libraries=places&callback=initLocationSearch" async defer></script>
 </body>
 </html>
