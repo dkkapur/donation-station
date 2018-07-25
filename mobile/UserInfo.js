@@ -1,9 +1,11 @@
 // UserInfo.js
 import React from 'react'
-import { StyleSheet, Platform, Image, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
+import RNGooglePlaces from 'react-native-google-places';
+
 import firebase from 'react-native-firebase'
 export default class UserInfo extends React.Component {
-  state = { currentUser: null }
+  state = { currentUser: null, place: null }
   render() {
     return (
       <View style={styles.container}>
@@ -13,13 +15,12 @@ export default class UserInfo extends React.Component {
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}
-        <TextInput
-          placeholder="Location"
-          autoCapitalize="none"
-          style={styles.textInput}
-          //onChangeText={email => this.setState({ email })}
-          //value={this.state.email}
+          
+        <Button
+          title="Input your location"
+          onPress={() => this.openSearchModal()}
         />
+
         <TextInput
           placeholder="Phone Number"
           autoCapitalize="none"
@@ -37,10 +38,12 @@ export default class UserInfo extends React.Component {
     this.setState({ currentUser })
   }
 
-  logout() {
-    firebase.auth().signOut().then(() => {
-      this.setState({ currentUser: null} )
-        });
+  openSearchModal() {
+    RNGooglePlaces.openAutocompleteModal()
+    .then((place) => {
+      this.setState({place: JSON.stringify(place)})
+    })
+    .catch(error => console.log(error.message)); 
   }
 }
 
@@ -56,5 +59,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8
+  },
+  button: {
+    backgroundColor: '#263238',
+    flexDirection: 'row',
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10
   }
 })
