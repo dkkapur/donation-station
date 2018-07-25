@@ -16,7 +16,7 @@ p, form {
 
 .container-fluid {
     height: 100%;
-    overflow-y: hidden
+    /*overflow-y: hidden */
     /* don't show content that exceeds my height */
 }
 
