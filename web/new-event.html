@@ -69,7 +69,7 @@
             var donation = getDonations();
 
             var eventData = {
-                event_id: "test",
+                // event_id: "test",
                 host: "test",
                 name: name,
                 type: type,
@@ -83,16 +83,32 @@
 
             document.getElementById("output").innerText = JSON.stringify(eventData)
             
-            var url = "https://suhurulitest.azurewebsites.net/api/eventsPut";
+            var url = "https://donationstationapp.azurewebsites.net/api/eventspost";
 
-            $.post({
-                url: url,
-                data: eventData,
-                success:  function() {
-                    alert("Successfully created the event");
-                    window.location.href = "events.html";
+            // $.post({
+            //     url: url,
+            //     data: eventData,
+            //     success:  function() {
+            //         alert("Successfully created the event");
+            //         window.location.href = "events.html";
+            //     }
+            // })
+
+            var xhr = new XMLHttpRequest(); 
+            var url = "https://donationstationapp.azurewebsites.net/api/eventspost"; 
+
+            xhr.onreadystatechange = function() { 
+                if (xhr.readyState == 4) {
+                    alert("Successfully created the event"); 
+                    window.location.href = "events.html"; 
                 }
-            })
+            }
+
+            var data = JSON.stringify(eventData); 
+
+            xhr.open("POST", url, true);
+            xhr.send(data); 
+
         }
     </script>
 </head>
