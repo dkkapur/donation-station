@@ -19,8 +19,13 @@ export const styles = StyleSheet.create({
     marginTop: 8
   },
   centerCard: {
-    height: 400,
-    width: 400,
+    height: '60%',
+    width: '80%',
+    borderRadius: 5
+  },
+  LargeCenterCard: {
+    height: '90%',
+    width: '80%',
     borderRadius: 5
   },
   primaryButton: {
@@ -36,5 +41,5 @@ export const styles = StyleSheet.create({
     marginRight: 0,
     marginBottom: 10,
     backgroundColor: tertiary
-  },
+  }
 });
