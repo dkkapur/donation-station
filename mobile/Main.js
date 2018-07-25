@@ -1,12 +1,11 @@
 // Main.js
 import React from 'react'
         import {
-        StyleSheet, Platform, Image, Text, View, Button, View,
+        StyleSheet, Platform, Image, Button, View,
                 ScrollView,
                 TouchableHighlight,
                 ListView } from 'react-native'
         import firebase from 'react-native-firebase'
-        import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import {
 Text,
@@ -16,7 +15,7 @@ Text,
         Icon,
         ListItem,
         Avatar,
-        } from 'react-native-elements';
+} from 'react-native-elements';
 
 export default class Main extends React.Component {
     state = {currentUser: null}
@@ -24,20 +23,20 @@ export default class Main extends React.Component {
         const {currentUser} = this.state
         return (
                 <ScrollView>
-        <View style={styles.headerContainer}>
-          <Icon color="white" name="invert-colors" size={62} />
-          <Text style={styles.heading}>Lists</Text>
-        </View>
-                <View style={styles.container}>
-                    <Text>
-                    Hi {currentUser && currentUser.email}!
-                    </Text>
+                    <View style={styles.headerContainer}>
+                        <Icon color="white" name="invert-colors" size={62} />
+                        <Text style={styles.heading}>Events Near Me</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <Text>
+                        Hi {currentUser && currentUser.email}!
+                        </Text>
                 
-                    <Button style={styles.topBar} onPress={this.logout.bind(this)}
-                            title="Log Out"
-                            />
+                        <Button style={styles.topBar} onPress={this.logout.bind(this)}
+                                title="Log Out"
+                                />
                 
-                </View>
+                    </View>
                 </ScrollView>
                 )
     }
@@ -64,5 +63,17 @@ const styles = StyleSheet.create({
 
     topBar: {
         backgroundColor: 'pink'
+    },
+
+    headerContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 40,
+        backgroundColor: '#FD6B78',
+    },
+    heading: {
+        color: 'white',
+        marginTop: 10,
+        fontSize: 22,
     }
 })

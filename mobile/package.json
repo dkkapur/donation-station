@@ -21,6 +21,7 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
     "fbjs": "^0.8.17",
     "react": "^16.3.2",
     "react-native": "^0.55.3",
