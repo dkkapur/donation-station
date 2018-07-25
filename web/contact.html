@@ -25,9 +25,9 @@
     
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.html">About</a></li>
+                    <li><a href="index.html">About</a></li>
                     <li><a href="events.html">My charity events</a></li>
-                    <li><a href="contact.html">Contact us</a></li>
+                    <li class="active"><a href="contact.html">Contact us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -43,9 +43,18 @@
         
         <div class="col-sm-8 content">
             <div class="text-content text-left">
-                <h1>Welcome to Donation Station</h1>
-                <p>Your one stop shop for getting the right donations - whether it is time or specific items like blankets and paper towels to help those in need!</p>
-                <input type="button" onclick="location.href='signin.html';" value="Sign in!" />
+                <h1>Reach us!</h1>
+                <p>Hopefully your experience with DonationStation is going great so far! If it isn't we're sorry and we're here to help improve things! Please reach out to us with the following form, and we'll get back to you as soon as possible:</p> <br>
+                <form action="mailto:aruptonr@microsoft.com" method="post" enctype="text/plain">
+                    Name:<br>
+                    <input type="text" name="name"><br> <br>
+                    E-mail:<br>
+                    <input type="text" name="mail"><br> <br>
+                    Comments:<br>
+                    <input type="text" name="comment" size="50"><br><br>
+                    <input type="submit" value="Send">
+                    <input type="reset" value="Reset">
+                </form>
             </div>
         </div>
         
