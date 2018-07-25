@@ -74,9 +74,9 @@
                 name: name,
                 type: type,
                 address: place.formatted_address,
-                location: place.geometry.location,
-                zip: getZipCode(place),
-                startime: startTime,
+                location: JSON.stringify(place.geometry.location),
+                //zip: getZipCode(place),
+                starttime: startTime,
                 endtime: endTime,
                 items: donation,
             }
