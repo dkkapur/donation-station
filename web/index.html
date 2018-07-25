@@ -16,6 +16,25 @@
 </head>
 <body>
 
+<script type="text/javascript">
+            $(document).ready(function() {
+                user = localStorage.getItem("user");
+                if(user)
+                {
+                    $("#user")
+                    .attr({"href": "javascript:logout()"})
+                    .text("Hello, " + user + ". Logout")
+                } else {
+                    location.href = "signin.html"
+                }
+            })
+            
+            function logout() {
+                localStorage.removeItem("user")
+                location.href = "signin.html"
+            }
+        </script>
+
 <nav class="navbar navbar-inverse">
         <div class="container-fluid">
     
@@ -30,7 +49,7 @@
                     <li><a href="contact.html">Contact us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a id="user" href="signin.html"> Login</a></li>
                 </ul>
             </div>
         </div>

@@ -13,6 +13,25 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="icon" type="image/png" href="img/logo.png">
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            user = localStorage.getItem("user");
+            if(user)
+            {
+                $("#user")
+                .attr({"href": "javascript:logout()"})
+                .text("Hello, " + user + ". Logout")
+            } else {
+                location.href = "signin.html"
+            }
+        })
+        
+        function logout() {
+            localStorage.removeItem("user")
+            location.href = "signin.html"
+        }
+    </script>
+
 	<script language="JavaScript">
         var place;
 
@@ -66,8 +85,10 @@
             var donation = getDonations()
             var coords = formatLocation(place.geometry.location)
 
+            var host = localStorage.getItem("user");
+
             var eventData = {
-                host: "test",
+                host: host,
                 name: name,
                 type: type,
                 address: place.formatted_address,
@@ -119,7 +140,7 @@
                 <li><a href="contact.html">Contact us</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="signin.html" id="user"> Login</a></li>
             </ul>
         </div>
     </div>
