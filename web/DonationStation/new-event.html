@@ -13,6 +13,51 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="icon" type="image/png" href="img/logo.png">
 
+	<script language="JavaScript">
+        function validateFormOnSubmit() {
+            var eventData = new Object();
+            eventData.event_id = "test"
+
+            var name = document.getElementById("event_name").value
+            eventData.name = name;
+
+            var type = document.getElementById("type").value;
+            eventData.type = type; 
+            eventData.host = "foo"
+
+            var location = document.getElementById("location").value;
+            eventData.location  = location
+            var zip = document.getElementById("zip").value;
+            eventData.zip = zip;
+            var startTime = document.getElementById("starttime").value;
+            eventData.starttime  = startTime	  
+            var endtime = document.getElementById("endtime").value;
+            eventData.endtime  = endtime
+
+            var x = document.getElementById("donation_clothes");
+            var donation = "";
+            if(x.checked){
+                donation+=x.value
+            }
+            var y = document.getElementById("donation_blanket");
+            if(y.checked){
+                if (donation != "") {
+                    donation+= ',' + y.value
+                }
+                else {
+                    donation+= y.value
+                }
+            }
+            eventData.items = donation;	    	   
+
+            var xhr = new XMLHttpRequest();
+            var url = "https://suhurulitest.azurewebsites.net/api/eventsPut";
+            xhr.open("POST", url, true);
+
+            var data = JSON.stringify(eventData);
+            xhr.send(data);
+        }
+</script>
 </head>
 <body>
 
@@ -45,15 +90,16 @@
             <div class="text-content text-left">
                 <h1> New event</h1>
                 <!-- event_type((string), host (string), location (string),  zip (int), starttime (datetime), endtime (datetime), items (list of objects) -->
-                <form action="https://suhurulitest.azurewebsites.net/api/itemsPut" method="POST">
+				<form method="post" name="myform"> 
+                <!--<form action="http://requestbin.fullcontact.com/1dsyqx71 " method="Get">-->
                     <br>
                     
                     Event name:
-                    <input name="name" type="text">
+                    <input name="name" type="text" id="event_name">
                     <br> <br>
 
                     Event type:
-                    <select name="type">
+                    <select name="type" id="type">
                         <option value="pickup">Pick up</option>
                         <option value="dropoff">Drop-off</option>
                         <option value="volunteer">Volunteer</option>
@@ -61,29 +107,29 @@
                     <br> <br>
 
                     Location:
-                    <input name="location" type="text">
+                    <input name="location" id="location" type="text">
                     <br> <br>
 
                     Zip code: 
-                    <input name="zip" type="number">
+                    <input name="zip" id="zip" type="number">
                     <br> <br>
 
                     Start time:
-                    <input name="starttime" type="datetime-local">
+                    <input name="starttime" id="starttime" type="datetime-local">
                     <br> <br>
 
                     End time:
-                    <input name="endtime" type="datetime-local">
+                    <input name="endtime" id="endtime" type="datetime-local">
                     <br> <br>
 
                     Items: <br>
-                    <input type="checkbox" name="items[]" value="clothes">Clothes<br>
-                    <input type="checkbox" name="items[]" value="blanket">Blanket<br>
+                    <input  id="donation_clothes"  type="checkbox" name="items[]" value="clothes">Clothes<br>
+                    <input id="donation_blanket"  type="checkbox" name="items[]" value="blanket">Blanket<br>
                     <br> <br>
 
-                    <input name="host" type="text" value="sravanabhavan">
+                    <input name="host" type="text"  id="host" value="sravanabhavan">
                 
-                    <input type="submit" value="Create event" />
+                    <input type="button" onClick="validateFormOnSubmit()" value="Create event" />
                 </form>
             </div>
         </div>
