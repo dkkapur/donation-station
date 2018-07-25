@@ -6,11 +6,24 @@ import { FormLabel, FormInput, Card, Button } from 'react-native-elements'
 import { styles } from './styling';
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
+
   handleLogin = () => {
-    const { email, pasword } = this.state
+    if (!this.state.email || this.state.email === "") 
+    {
+      this.setState({errorMessage: "Please input an email address"})
+      return
+    }
+
+    if (!this.state.password || this.state.password === "") 
+    {
+      this.setState({errorMessage: "Please input a password"})
+      return
+    }
+    
+    const { email, password } = this.state
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInAndRetrieveDataWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('Main'))
       .catch(error => this.setState({ errorMessage: error.message }))
   }

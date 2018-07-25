@@ -8,10 +8,22 @@ import { styles } from './styling';
 export default class SignUp extends React.Component {
   state = { email: '', password: '', errorMessage: null }
 handleSignUp = () => {
+    if (!this.state.email || this.state.email === "") 
+    {
+      this.setState({errorMessage: "Please input an email address"})
+      return
+    }
+
+    if (!this.state.password || this.state.password === "") 
+    {
+      this.setState({errorMessage: "Please input a password"})
+      return
+    }
+
     firebase
       .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => this.props.navigation.navigate('Main'))
+      .createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.props.navigation.navigate('UserInfo'))
       .catch(error => this.setState({ errorMessage: error.message }))
 }
 render() {
