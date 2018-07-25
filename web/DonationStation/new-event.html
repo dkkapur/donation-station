@@ -48,16 +48,32 @@
                     donation+= y.value
                 }
             }
-            eventData.items = donation;	    	   
+            eventData.items = donation;
 
+        
             var xhr = new XMLHttpRequest();
             var url = "https://suhurulitest.azurewebsites.net/api/eventsPut";
-            xhr.open("POST", url, true);
+
+            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    alert("Successfully created the event");
+                    window.location.href = "events.html";
+                }
+            }
 
             var data = JSON.stringify(eventData);
+
+            xhr.open("POST", url, true);
             xhr.send(data);
+
+            /*xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert("Your event has been added!")
+                }
+            }*/
         }
-</script>
+    </script>
 </head>
 <body>
 
