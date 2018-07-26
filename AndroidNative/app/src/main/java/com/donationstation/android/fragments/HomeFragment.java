@@ -1,5 +1,6 @@
 package com.donationstation.android.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donationstation.android.EventDetailActivity;
 import com.donationstation.android.R;
 import com.donationstation.android.adapters.EventRecyclerViewAdapter;
 import com.donationstation.android.adapters.IRecyclerViewItemClickListener;
@@ -20,12 +22,13 @@ import com.donationstation.android.models.MyItem;
 import com.donationstation.android.network.RetrofitClient;
 import com.donationstation.android.utils.JsonUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -36,7 +39,6 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private List<Event> events = new ArrayList<>();
-    private List<MyItem> myItems = new ArrayList<>();
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -56,7 +58,28 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event){
+        setUpItemsRecyclerView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         setUpEventRecyclerView();
         setUpItemsRecyclerView();
     }
@@ -71,53 +94,17 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new IRecyclerViewItemClickListener() {
             @Override
             public void onItemClicked(View v, int position) {
-
+                Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+                intent.putExtra("event", events.get(position));
+                startActivity(intent);
             }
         });
     }
 
     private void setUpItemsRecyclerView() {
         binding.recyclerviewItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        MyItemRecyclerViewAdapter adapter = new MyItemRecyclerViewAdapter(myItems);
+        MyItemRecyclerViewAdapter adapter = new MyItemRecyclerViewAdapter(JsonUtils.items);
         binding.recyclerviewItems.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new IRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClicked(View v, int position) {
-
-            }
-        });
-    }
-
-    private void getEvents(){
-        RetrofitClient.getInstance(getContext()).getDonationStationService()
-                .getEvents()
-                .enqueue(new Callback<List<Event>>() {
-                    @Override
-                    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Event>> call, Throwable t) {
-
-                    }
-                });
-    }
-
-    private void getMyItems(){
-        RetrofitClient.getInstance(getContext()).getDonationStationService()
-                .getMyItems("")
-                .enqueue(new Callback<List<MyItem>>() {
-                    @Override
-                    public void onResponse(Call<List<MyItem>> call, Response<List<MyItem>> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<MyItem>> call, Throwable t) {
-
-                    }
-                });
     }
 }

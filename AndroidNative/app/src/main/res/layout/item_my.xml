@@ -5,7 +5,7 @@
 
         <variable
             name="myItem"
-            type="com.donationstation.android.models.MyItem" />
+            type="String" />
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,16 +13,16 @@
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/MS_Value"
             android:id="@+id/txt_item_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingEnd="8dp"
             android:paddingTop="16dp"
-            android:text="@{myItem.title}"
-            android:textSize="20sp"
+            android:text="@{myItem}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>

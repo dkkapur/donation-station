@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,10 +46,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
 
-        if (SharedPreferencesUtils.getInstance().isUserRegistered()) {
+        /*if (SharedPreferencesUtils.getInstance().isUserRegistered()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        }
+        }*/
 
         binding.btnRegister.setOnClickListener(this);
 
@@ -66,7 +67,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         String email = binding.txeEmail.getText().toString();
         String name = binding.txeName.getText().toString();
-        String zipCode = binding.txeZip.getText().toString();
         String location = binding.txeLocation.getText().toString();
 
         List<String> items = new ArrayList<>();
@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (binding.checkbox3.isChecked()) items.add(binding.checkbox3.getText().toString());
         if (binding.checkbox4.isChecked()) items.add(binding.checkbox4.getText().toString());
 
-        User registration = new User(email, name,location, zipCode, items);
+        User registration = new User(email, name,location, "", items);
 
         sendToServer(registration);
     }
@@ -95,7 +95,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void sendToServer(final User user) {
-        RetrofitClient.getInstance(getApplicationContext()).getDonationStationService()
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferencesUtils.getInstance().setIsUserRegistered(true);
+                SharedPreferencesUtils.getInstance().setUserId(user.getUser_id());
+                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                finish();
+            }
+        },1500);
+
+        /*RetrofitClient.getInstance(getApplicationContext()).getDonationStationService()
                 .sendUserRegistration(user)
                 .enqueue(new Callback<Void>() {
                     @Override
@@ -115,7 +126,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         Log.e("Error", t.getMessage());
                         showDialog();
                     }
-                });
+                });*/
     }
 
     private void showDialog(){

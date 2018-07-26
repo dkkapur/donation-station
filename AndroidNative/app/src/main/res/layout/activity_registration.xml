@@ -6,7 +6,8 @@
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -44,6 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_logo" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_email"
@@ -90,25 +97,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Location"
-                        android:inputType="text"
-                        android:imeOptions="actionNext"
-                        android:maxLines="1" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/til_zip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/txe_zip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Zip Code"
                         android:imeOptions="actionDone"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:maxLines="1" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -116,8 +106,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="Interests:"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -144,6 +135,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:text="Health" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -176,10 +168,14 @@
             style="@style/MS_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Register"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingBottom="4dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="4dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Register" />
     </android.support.constraint.ConstraintLayout>
 </layout>

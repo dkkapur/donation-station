@@ -2,6 +2,7 @@ package com.donationstation.android.application;
 
 import android.app.Application;
 
+import com.donationstation.android.utils.JsonUtils;
 import com.donationstation.android.utils.SharedPreferencesUtils;
 
 /**
@@ -13,5 +14,7 @@ public class DonationStationApp extends Application {
     public void onCreate() {
         super.onCreate();
         SharedPreferencesUtils.createInstance(this);
+
+        JsonUtils.getItems();
     }
 }

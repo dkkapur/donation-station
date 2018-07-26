@@ -41,6 +41,9 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

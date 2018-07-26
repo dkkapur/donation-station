@@ -9,16 +9,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.donationstation.android.R;
 import com.donationstation.android.adapters.IRecyclerViewItemClickListener;
 import com.donationstation.android.adapters.MyItemDeleteRecyclerViewAdapter;
 import com.donationstation.android.adapters.MyItemRecyclerViewAdapter;
 import com.donationstation.android.databinding.FragmentMyItemsBinding;
+import com.donationstation.android.models.Event;
 import com.donationstation.android.models.MyItem;
+import com.donationstation.android.utils.JsonUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 /**
@@ -28,7 +33,6 @@ import java.util.List;
 public class MyItemsFragment extends Fragment implements View.OnClickListener {
 
     private FragmentMyItemsBinding binding;
-    private List<MyItem> myItems = new ArrayList<>();
     private MyItemDeleteRecyclerViewAdapter adapter;
 
     public static MyItemsFragment getInstance() {
@@ -54,13 +58,13 @@ public class MyItemsFragment extends Fragment implements View.OnClickListener {
 
     private void setUpItemsRecyclerView() {
         binding.recyclerviewItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyItemDeleteRecyclerViewAdapter(myItems);
+        adapter = new MyItemDeleteRecyclerViewAdapter(JsonUtils.items);
         binding.recyclerviewItems.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new IRecyclerViewItemClickListener() {
             @Override
             public void onItemClicked(View v, int position) {
-                myItems.remove(position);
+                JsonUtils.items.remove(position);
                 adapter.notifyItemRemoved(position);
             }
         });
@@ -68,10 +72,19 @@ public class MyItemsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String title = binding.editAddItem.getText().toString();
-        binding.editAddItem.setText("");
+        String title = binding.txeAddItem.getText().toString();
+        binding.txeAddItem.setText("");
+        controlKeyboard();
+        JsonUtils.items.add(new MyItem(title));
+        adapter.notifyItemInserted(JsonUtils.items.size() - 1);
 
-        myItems.add(new MyItem(title));
-        adapter.notifyItemInserted(myItems.size() - 1);
+        EventBus.getDefault().post(new Event());
+    }
+
+    public void controlKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+
+            inputMethodManager.hideSoftInputFromWindow(binding.txeAddItem.getWindowToken(), 0);
     }
 }

@@ -6,6 +6,6 @@ package com.donationstation.android;
 
 public class Constants {
 
-    public static final String CONFIG_BASE_URL = "https://suhurulitest.azurewebsites.net/api/";
+    public static final String CONFIG_BASE_URL = "https://donationstationapp.azurewebsites.net/api/";
 
 }
