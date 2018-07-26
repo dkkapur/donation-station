@@ -20,13 +20,21 @@ $(document).ready(function() {
     user = localStorage.getItem("user");
     if(user)
     {
-        console.log(user)
         $("#user")
         .attr({"href": "javascript:logout()"})
         .text("Hello, " + user + ". Logout")
     } else {
         location.href = "signin.html"
     }
+
+    url = "https://donationstationapp.azurewebsites.net/api/GetEventsByHost?host=" + encodeURI(user);
+    var xhr = new XMLHttpRequest(); 
+            xhr.onreadystatechange = function() { 
+                console.log("hi")
+                console.log(xhr.responseText);
+            }
+            xhr.open("GET", url, true);
+            xhr.send(); 
 })
 
 function logout() {
