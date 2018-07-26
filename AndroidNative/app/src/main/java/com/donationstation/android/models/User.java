@@ -13,7 +13,7 @@ public class User {
     private String email;
     private String zip;
     private String location;
-    private String interest;
+    private List<String> interest;
     private List<String> items;
 
     public User(String name, String email, String location, String zipCode, List<String> interest) {
@@ -22,7 +22,7 @@ public class User {
         this.user_id = email;
         this.location = location;
         this.zip = zipCode;
-        this.interest = interest.toString();
+        this.interest = interest;
     }
 
     public String getUser_id() {
@@ -49,7 +49,7 @@ public class User {
         return location;
     }
 
-    public String getInterest() {
+    public List<String> getInterest() {
         return interest;
     }
 
@@ -81,7 +81,7 @@ public class User {
         this.location = location;
     }
 
-    public void setInterest(String interest) {
+    public void setInterest(List<String> interest) {
         this.interest = interest;
     }
 

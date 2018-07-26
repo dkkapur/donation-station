@@ -2,6 +2,7 @@ package com.donationstation.android.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.donationstation.android.databinding.FragmentHomeBinding;
 import com.donationstation.android.models.Event;
 import com.donationstation.android.models.MyItem;
 import com.donationstation.android.network.RetrofitClient;
+import com.donationstation.android.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +48,22 @@ public class HomeFragment extends Fragment {
                 inflater, R.layout.fragment_home, container, false);
         View rootView = binding.getRoot();
 
+        setUpEventRecyclerView();
+        setUpItemsRecyclerView();
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setUpEventRecyclerView();
+        setUpItemsRecyclerView();
+    }
+
     private void setUpEventRecyclerView() {
+        events = JsonUtils.getEvents();
+
         binding.recyclerviewEvents.setLayoutManager(new LinearLayoutManager(getContext()));
         EventRecyclerViewAdapter adapter = new EventRecyclerViewAdapter(events);
         binding.recyclerviewEvents.setAdapter(adapter);
@@ -93,7 +107,7 @@ public class HomeFragment extends Fragment {
 
     private void getMyItems(){
         RetrofitClient.getInstance(getContext()).getDonationStationService()
-                .getMyItems()
+                .getMyItems("")
                 .enqueue(new Callback<List<MyItem>>() {
                     @Override
                     public void onResponse(Call<List<MyItem>> call, Response<List<MyItem>> response) {

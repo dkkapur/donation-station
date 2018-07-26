@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFu_zqTnuoH1zZImIyB3EObmI0OCYQPIQ"/>
+
         <service
             android:name=".notification.MyFirebaseMessagingService">
             <intent-filter>

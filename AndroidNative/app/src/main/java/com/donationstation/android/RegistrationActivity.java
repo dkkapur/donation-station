@@ -14,6 +14,11 @@ import com.donationstation.android.databinding.ActivityRegistrationBinding;
 import com.donationstation.android.models.User;
 import com.donationstation.android.network.RetrofitClient;
 import com.donationstation.android.utils.SharedPreferencesUtils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,9 @@ import retrofit2.Response;
  */
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+
+    String TAG = RegistrationActivity.class.getSimpleName();
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private ActivityRegistrationBinding binding;
 
@@ -43,6 +51,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
         binding.btnRegister.setOnClickListener(this);
+
+        binding.txeLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    openGooglePlace();
+                }
+            }
+        });
     }
 
     @Override
@@ -62,6 +79,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         User registration = new User(email, name,location, zipCode, items);
 
         sendToServer(registration);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                //place.().
+                place.getLatLng();
+
+                binding.txeLocation.setText(place.getAddress());
+            }
+        }
     }
 
     private void sendToServer(final User user) {
@@ -95,5 +125,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 .setPositiveButton("Ok", null)
                 .create()
                 .show();
+    }
+
+    private void openGooglePlace(){
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+
     }
 }

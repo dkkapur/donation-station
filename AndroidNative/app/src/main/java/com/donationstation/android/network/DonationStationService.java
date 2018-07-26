@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by sunilkumarlakkad on 7/24/18.
@@ -17,9 +18,8 @@ import retrofit2.http.POST;
 
 public interface DonationStationService {
 
-    @POST("usersPost")
+    @POST("userspost")
     Call<Void> sendUserRegistration(@Body User user);
-
 
     @POST("PushNotification")
     Call<Void> sendNotificationToken(@Body User user);
@@ -28,5 +28,5 @@ public interface DonationStationService {
     Call<List<Event>> getEvents();
 
     @GET("items")
-    Call<List<MyItem>> getMyItems();
+    Call<List<MyItem>> getMyItems(@Query("userId") String userId);
 }
