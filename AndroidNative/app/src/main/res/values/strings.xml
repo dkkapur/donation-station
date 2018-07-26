@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DonationStation</string>
+
+    <string name="menu_my_items">My Items</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_settings">Settings</string>
+
+</resources>
